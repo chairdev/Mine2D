@@ -101,41 +101,39 @@ public class WorldGenerator : MonoBehaviour
                 {
                     if (blocks[x, y, z].id != BlockID.AIR && !IsBlockAtOffset(x, y, z, 0, -1, 1))
                     {
+                        Vector3 blockPosition = new Vector3(x, y + (z * 0.5f), 0);
                         drawnBlocks++;
                         //this is a 2d sprite
-                        GameObject block = Instantiate(blockPrefab, new Vector3(x, y+(z*0.5f), 0), Quaternion.identity);
-                        block.GetComponent<SpriteRenderer>().sprite = blockScriptables[(int)blocks[x, y, z].id].sprite;
-                        block.GetComponent<SpriteRenderer>().sortingOrder = z;
+                        GameObject block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
+                        SpriteRenderer blockRenderer = block.GetComponent<SpriteRenderer>();
+                        BlockScriptable blockScriptable = blockScriptables[(int)blocks[x, y, z].id];
+
+                        blockRenderer.sprite = blockScriptable.sprite;
+                        blockRenderer.sortingOrder = z;
+
                         blockGameObjects[x, y, z] = block;
 
-                        //check if there's is not a block to the left
-                        if (x == 0 || blocks[x - 1, y, z].id == BlockID.AIR)
+                        SpriteRenderer[] sideRenderers = new SpriteRenderer[3];
+                        GameObject[] sidePrefabs = new GameObject[] { blockDepth[0], blockDepth[1], blockDepth[2] };
+
+                        for (int i = 0; i < sideRenderers.Length; i++)
                         {
-                            GameObject leftSide = Instantiate(blockDepth[0], new Vector3(x, y+(z*0.5f), 0), Quaternion.identity, block.transform);
-                            leftSide.GetComponent<SpriteRenderer>().color = blockScriptables[(int)blocks[x, y, z].id].lineColor;
-                            leftSide.GetComponent<SpriteRenderer>().sortingOrder = z;
+                            if ((i == 0 && x == 0) || (i == 1 && x == chunkSize.x - 1) || (i == 2 && y == chunkSize.y - 1))
+                            {
+                                continue;
+                            }
+
+                            if ((i == 0 && blocks[x - 1, y, z].id == BlockID.AIR) ||
+                                (i == 1 && blocks[x + 1, y, z].id == BlockID.AIR) ||
+                                (i == 2 && blocks[x, y + 1, z].id == BlockID.AIR))
+                            {
+                                GameObject side = Instantiate(sidePrefabs[i], blockPosition, Quaternion.identity, block.transform);
+                                SpriteRenderer sideRenderer = side.GetComponent<SpriteRenderer>();
+                                sideRenderer.color = blockScriptable.lineColor;
+                                sideRenderer.sortingOrder = z;
+                                sideRenderers[i] = sideRenderer;
+                            }
                         }
-                        //check if there's is not a block to the right
-                        if (x == chunkSize.x - 1 || blocks[x + 1, y, z].id == BlockID.AIR)
-                        {
-                            GameObject rightSide = Instantiate(blockDepth[1], new Vector3(x, y+(z*0.5f), 0), Quaternion.identity, block.transform);
-                            rightSide.GetComponent<SpriteRenderer>().color = blockScriptables[(int)blocks[x, y, z].id].lineColor;
-                            rightSide.GetComponent<SpriteRenderer>().sortingOrder = z;
-                        }
-                        //check if there's is not a block to the top
-                        if (y == chunkSize.y - 1 || blocks[x, y + 1, z].id == BlockID.AIR)
-                        {
-                            GameObject topSide = Instantiate(blockDepth[2], new Vector3(x, y+(z*0.5f), 0), Quaternion.identity, block.transform);
-                            topSide.GetComponent<SpriteRenderer>().color = blockScriptables[(int)blocks[x, y, z].id].lineColor;
-                            topSide.GetComponent<SpriteRenderer>().sortingOrder = z;
-                        }
-                        // //check if there's is not a block to the bottom
-                        // if (y == 0 || blocks[x, y - 1, z].id == BlockID.AIR)
-                        // {
-                        //     GameObject bottomSide = Instantiate(blockDepth[3], new Vector3(x, y+z, 0), Quaternion.identity, block.transform);
-                        //     bottomSide.GetComponent<SpriteRenderer>().color = blockScriptables[(int)blocks[x, y, z].id].lineColor;
-                        //     bottomSide.GetComponent<SpriteRenderer>().sortingOrder = z;
-                        // }
                     }
                 }
             }
