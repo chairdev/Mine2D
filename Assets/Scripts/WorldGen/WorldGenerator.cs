@@ -92,14 +92,16 @@ public class WorldGenerator : MonoBehaviour
     void RenderChunk()
     {
         blockGameObjects = new GameObject[chunkSize.x, chunkSize.y, chunkSize.z];
+        int drawnBlocks = 0;
         for (int x = 0; x < chunkSize.x; x++)
         {
             for (int y = 0; y < chunkSize.y; y++)
             {
                 for (int z = 0; z < chunkSize.z; z++)
                 {
-                    if (blocks[x, y, z].id != BlockID.AIR)
+                    if (blocks[x, y, z].id != BlockID.AIR && !IsBlockAtOffset(x, y, z, 0, -1, 1))
                     {
+                        drawnBlocks++;
                         //this is a 2d sprite
                         GameObject block = Instantiate(blockPrefab, new Vector3(x, y+(z*0.5f), 0), Quaternion.identity);
                         block.GetComponent<SpriteRenderer>().sprite = blockScriptables[(int)blocks[x, y, z].id].sprite;
@@ -139,7 +141,24 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log("Number of Blocks:" + blockGameObjects.Length);
+        Debug.Log("Number of Blocks:" + drawnBlocks);
+    }
+
+    void DestroyChunk()
+    {
+        for (int x = 0; x < chunkSize.x; x++)
+        {
+            for (int y = 0; y < chunkSize.y; y++)
+            {
+                for (int z = 0; z < chunkSize.z; z++)
+                {
+                    if (blockGameObjects[x, y, z] != null)
+                    {
+                        Destroy(blockGameObjects[x, y, z]);
+                    }
+                }
+            }
+        }
     }
 
     bool IsBlockAtOffset(int x, int y, int z, int xOffset, int yOffset, int zOffset)
