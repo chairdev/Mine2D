@@ -13,8 +13,7 @@ public class WorldGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateChunkPerlin
-          ();
+        GenerateChunkPerlin();
         RenderChunk();
     }
 
