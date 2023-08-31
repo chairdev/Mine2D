@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldGenerator : MonoBehaviour
 {
     public Vector2Int noiseOffset = new Vector2Int(0, 0);
-    public float noiseScale = 20;
+    public double noiseScale = 0.20;
 
     public static WorldGenerator Instance;
     void Awake()
@@ -41,22 +41,44 @@ public class WorldGenerator : MonoBehaviour
             {
                 for (int z = 0; z < Chunk.chunkSize.z; z++)
                 {
-                    int Value = Mathf.FloorToInt(surfaceY + OpenSimplex2.Noise2(World.Instance.seed, chunkOffset.x + x, chunkOffset.y + y) * noiseScale);
-
-                    if(Value < surfaceY)
-                    {
-                        chunk[x, y, z].id = BlockID.STONE;
-                    }
-                    else
-                    {
-                        chunk[x, y, z].id = BlockID.AIR;
-                    }
+                    chunk[x, y, z].id = GetBlock(x * chunkOffset.x, y * chunkOffset.y, z * chunkOffset.z);
                 }
             }
         }
 
+        // chunk = GenerateTestChunk();
+        // chunk.position = chunkPosition;
         chunk.chunkState = ChunkState.LOADING;
         return chunk;
+    }
+
+    BlockID GetBlock(int  x, int y, int z)
+    {
+        BlockID block = BlockID.AIR;
+        int surfaceHeight = 100;
+        //octave 1
+        float noise = OpenSimplex2.Noise2(World.Instance.seed, x * noiseScale, z * noiseScale);
+        Debug.Log("Heightmap Noise: " + noise);
+
+        int newZ = (int)(noise*100);
+        Debug.Log("New Z: " + newZ);
+
+        if (z == newZ)
+        {
+            block = BlockID.GRASS;
+        }
+        else if (z < newZ)
+        {
+            block = BlockID.DIRT;
+        }
+        else
+        {
+            block = BlockID.STONE;
+        }
+        
+        
+
+        return block;
     }
 
     Chunk GenerateTestChunk()
@@ -135,7 +157,7 @@ public class WorldGenerator : MonoBehaviour
 [System.Serializable]
 public class Chunk
 {
-    public static Vector3Int chunkSize = new Vector3Int(16, 16, 16);
+    public static Vector3Int chunkSize = new Vector3Int(16, 16, 32);
 
     public Vector3Int position;
     private Block[,,] blocks = new Block[chunkSize.x,chunkSize.y, chunkSize.z];

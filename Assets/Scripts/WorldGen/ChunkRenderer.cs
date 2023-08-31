@@ -27,7 +27,8 @@ public class ChunkRenderer : MonoBehaviour
                     //RENDER CHUNK
                 break;
                 case ChunkState.OUT_OF_VIEW:
-                    //DESTROY CHUNK
+                    Destroy(chunkObjects[i]);
+                    World.Instance.loadedChunks.RemoveAt(i);
                 break;
             }
 
@@ -56,7 +57,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         string chunkName = GetChunkName(chunk.position);
         GameObject chunkObject = new GameObject(chunkName);
-        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, chunk.position.y * Chunk.chunkSize.y);
+        Debug.Log(chunk.position.x);
 
         int drawnBlocks = 0;
         for (int x = 0; x < Chunk.chunkSize.x; x++)
@@ -94,7 +95,8 @@ public class ChunkRenderer : MonoBehaviour
                                 GameObject side = Instantiate(sidePrefabs[i], blockPosition, Quaternion.identity, block.transform);
                                 SpriteRenderer sideRenderer = side.GetComponent<SpriteRenderer>();
                                 sideRenderer.color = blockScriptable.lineColor;
-                                sideRenderer.sortingOrder = z;
+                                sideRenderer.sortingOrder = z+1;
+                                Debug.Log("Z:" + z);
                                 sideRenderers[i] = sideRenderer;
                             }
                         }
@@ -103,6 +105,8 @@ public class ChunkRenderer : MonoBehaviour
             }
         }
 
+        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, (chunk.position.y * Chunk.chunkSize.y) + ((chunk.position.z * Chunk.chunkSize.z) * 0.5f), 0);
+        chunkObjects.Add(chunkObject);
         Debug.Log("Number of Blocks:" + drawnBlocks);
     } 
 

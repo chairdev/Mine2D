@@ -58,6 +58,22 @@ public static class OpenSimplex2
         return Noise2_UnskewedBase(seed, xs, ys);
     }
 
+    public static float Noise2Octaves(long seed, double x, double y, int octaves)
+    {
+        float value = 0;
+        float amplitude = 1;
+        float frequency = 1;
+        float max = 0;
+        for (int i = 0; i < octaves; i++)
+        {
+            value += Noise2_ImproveX(seed, x * frequency, y * frequency) * amplitude;
+            max += amplitude;
+            amplitude /= 2;
+            frequency *= 2;
+        }
+        return value / max;
+    }
+
     /**
      * 2D Simplex noise, with Y pointing down the main diagonal.
      * Might be better for a 2D sandbox style game, where Y is vertical.

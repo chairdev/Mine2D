@@ -14,6 +14,7 @@ public class World : MonoBehaviour
 
     public string worldName = "DEBUG_WORLD";
     public long seed;
+    public int renderDistance = 2;
 
     public static Vector3 VolumetricPositionToSurfacePosition(Vector3 volumetricPosition)
     {
@@ -31,16 +32,17 @@ public class World : MonoBehaviour
     {
         Vector3Int playerChunk = WorldGenerator.PositionToChunk(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
         //check if chunks +- 2 are loaded
+        
         // Z Z Z Z Z
         // Z Z X Z Z
         // Z Z Z Z Z
         // Z Z Z Z Z
 
-        for (int x = -1; x < 1; x++)
+        for (int x = -renderDistance; x < renderDistance; x++)
         {
-            for (int y = -1; y < 1; y++)
+            for (int y = -renderDistance; y < renderDistance; y++)
             {
-                for (int z = -1; z < 1; z++)
+                for (int z = -renderDistance; z < renderDistance; z++)
                 {
                     Vector3Int chunkPos = new Vector3Int(playerChunk.x + x, playerChunk.y + y, 0);
                     Debug.Log(chunkPos);
@@ -52,6 +54,19 @@ public class World : MonoBehaviour
                 }
             }
         }
+
+        //unload the ones that are too far away
+        for (int i = 0; i < loadedChunks.Count; i++)
+        {
+            Vector3Int max = new Vector3Int(playerChunk.x + renderDistance, playerChunk.y + renderDistance, 0);
+            Vector3Int min = new Vector3Int(playerChunk.x - renderDistance, playerChunk.y - renderDistance, 0);
+            if(loadedChunks[i].position.x > max.x || loadedChunks[i].position.y > max.y || loadedChunks[i].position.x < min.x || loadedChunks[i].position.y < min.y)
+            {
+                loadedChunks[i].chunkState = ChunkState.OUT_OF_VIEW;
+            }
+        }
+
+        
     }
 
     bool IsChunkLoaded(Vector3Int chunkPos)

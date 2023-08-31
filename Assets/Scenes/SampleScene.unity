@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseOffset: {x: 0, y: 0}
-  noiseScale: 1
+  noiseScale: 2
 --- !u!4 &1671266644
 Transform:
   m_ObjectHideFlags: 0
@@ -315,3 +315,4 @@ MonoBehaviour:
   loadedChunks: []
   worldName: DEBUG_WORLD
   seed: 0
+  renderDistance: 2
