@@ -55,12 +55,12 @@ public class WorldGenerator : MonoBehaviour
     BlockID GetBlock(int  x, int y, int z)
     {
         BlockID block = BlockID.AIR;
-        int surfaceHeight = 100;
+        int surfaceHeight = 15;
         //octave 1
         float noise = OpenSimplex2.Noise2(World.Instance.seed, x * noiseScale, z * noiseScale);
         Debug.Log("Heightmap Noise: " + noise);
 
-        int newZ = (int)(noise*100);
+        int newZ = (int)(noise*surfaceHeight);
         Debug.Log("New Z: " + newZ);
 
         if (z == newZ)

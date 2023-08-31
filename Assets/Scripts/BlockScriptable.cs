@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Block", menuName = "ScriptableObjects/BlockScriptable", order = 1)]
 public class BlockScriptable : ScriptableObject
 {
-    public Sprite sprite;
+    public Material sprite;
     public Color lineColor;
 }
