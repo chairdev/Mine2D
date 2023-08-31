@@ -6,19 +6,19 @@ public class Player: MonoBehaviour
     public System.Action PositionChanged;
     public System.Action CellChanged;
 
-    public Vector3 Position3D
-    {
-        get => _position3d;
-        set
-        {
-            if (value != _position3d)
-            {
-                _position3d;
-                transform.position = VolumetricPositionToSurfacePosition(value);
-                PositionChanged?.Invoke();
-            }
-        }
-    }
+    // public Vector3 Position3D
+    // {
+    //     get => _position3d;
+    //     set
+    //     {
+    //         if (value != _position3d)
+    //         {
+    //             _position3d;
+    //             transform.position = VolumetricPositionToSurfacePosition(value);
+    //             PositionChanged?.Invoke();
+    //         }
+    //     }
+    // }
     private Vector3 _position3d =  new Vector3(0.0f, 0.0f, 0.0f);
 
     //z is depth. 2d has no depth. this is. yoo ni tie two D. so if you use transform.position.z, it will be zero.

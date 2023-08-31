@@ -15,7 +15,7 @@ public class ChunkRenderer : MonoBehaviour
         for(int i = 0; i < World.Instance.loadedChunks.Count; i++)
         {
             Chunk chunk = World.Instance.loadedChunks[i];
-            switch(chunk.state)
+            switch(chunk.chunkState)
             {
                 case ChunkState.LOADING:
                     CreateChunkOLD(chunk);
@@ -36,7 +36,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         string chunkName = GetChunkName(chunk.position);
         GameObject chunkObject = new GameObject(chunkName);
-        chunkObject.transform.position = new Vector3(chunkX * Chunk.chunkSize.x, chunkY * Chunk.chunkSize.y, chunkZ * Chunk.chunkSize.z);
+        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, (chunk.position.y * Chunk.chunkSize.y)* (chunk.position.z * Chunk.chunkSize.z) * 0.5f);
 
         int totalBlocks = Chunk.chunkSize.x * Chunk.chunkSize.y * Chunk.chunkSize.z;
 
@@ -44,7 +44,7 @@ public class ChunkRenderer : MonoBehaviour
         chunkObject.AddComponent<MeshRenderer>();
 
         Mesh mesh = new Mesh();
-        var vertices = new Vector3[];
+        //var vertices = new Vector3[];
         List<Vector2> uvs = new List<Vector2>();
 
         int drawnBlocks = 0;
@@ -54,7 +54,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         string chunkName = GetChunkName(chunk.position);
         GameObject chunkObject = new GameObject(chunkName);
-        chunkObject.transform.position = new Vector3(chunkX * Chunk.chunkSize.x, chunkY * Chunk.chunkSize.y, chunkZ * Chunk.chunkSize.z);
+        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, (chunk.position.y * Chunk.chunkSize.y)* (chunk.position.z * Chunk.chunkSize.z) * 0.5f);
 
         int drawnBlocks = 0;
         for (int x = 0; x < Chunk.chunkSize.x; x++)
@@ -63,7 +63,7 @@ public class ChunkRenderer : MonoBehaviour
             {
                 for (int z = 0; z < Chunk.chunkSize.z; z++)
                 {
-                    if (chunk[x, y, z].id != BlockID.AIR && !IsBlockAtOffset(x, y, z, 0, -1, 1))
+                    if (chunk[x, y, z].id != BlockID.AIR && !WorldGenerator.IsBlockAtOffset(chunk, x, y, z, 0, -1, 1))
                     {
                         Vector3 blockPosition = new Vector3(x, y + (z * 0.5f), 0);
                         drawnBlocks++;
@@ -106,6 +106,6 @@ public class ChunkRenderer : MonoBehaviour
 
     string GetChunkName(Vector3Int chunkPosition)
     {
-        return string chunkName = "Chunk (" + chunkPosition.x + ", " + chunkPosition.y + ", " + chunkPosition.z + ")";
+        return "Chunk (" + chunkPosition.x + ", " + chunkPosition.y + ", " + chunkPosition.z + ")";
     }  
 }

@@ -88,7 +88,7 @@ public class WorldGenerator : MonoBehaviour
         return chunk;
     }
 
-    bool IsBlockAtOffset(Chunk chunk, int x, int y, int z, int xOffset, int yOffset, int zOffset)
+    public static bool IsBlockAtOffset(Chunk chunk, int x, int y, int z, int xOffset, int yOffset, int zOffset)
     {
         if (x + xOffset < 0 || x + xOffset >= Chunk.chunkSize.x || y + yOffset < 0 || y + yOffset >= Chunk.chunkSize.y || z + zOffset < 0 || z + zOffset >= Chunk.chunkSize.z)
         {
