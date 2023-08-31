@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class World : MonoBehaviour
         Instance = this;
     }
 
+    public string worldName = "DEBUG_WORLD";
     public long seed;
 
     public static Vector3 VolumetricPositionToSurfacePosition(Vector3 volumetricPosition)
@@ -34,17 +36,18 @@ public class World : MonoBehaviour
         // Z Z Z Z Z
         // Z Z Z Z Z
 
-        for (int x = -2; x < 2; x++)
+        for (int x = -1; x < 1; x++)
         {
-            for (int y = -2; y < 2; y++)
+            for (int y = -1; y < 1; y++)
             {
-                for (int z = -2; z < 2; z++)
+                for (int z = -1; z < 1; z++)
                 {
-                    Vector3Int chunkPos = new Vector3Int(playerChunk.x + x, playerChunk.y + y, playerChunk.z + z);
+                    Vector3Int chunkPos = new Vector3Int(playerChunk.x + x, playerChunk.y + y, 0);
+                    Debug.Log(chunkPos);
                     if (!IsChunkLoaded(chunkPos))
                     {
                         //if not, load it
-                        WorldGenerator.Instance.GenerateChunk(chunkPos.x, chunkPos.y, chunkPos.z);
+                        LoadChunk(chunkPos);
                     }
                 }
             }
@@ -62,5 +65,28 @@ public class World : MonoBehaviour
             }  
         }
         return false;
+    }
+
+    void LoadChunk(Vector3Int chunkPos)
+    {
+        Chunk chunk = new Chunk();
+        //look for file
+        //if file exists, load it
+        if (File.Exists(Application.persistentDataPath + "/" + worldName + "/chunk/" + GetChunkFileName(chunkPos) + ".chunk"))
+        {
+            
+        }
+        else
+        {
+            chunk = WorldGenerator.Instance.GenerateChunk(chunkPos);
+        }
+        //if file does not exist, generate it
+        loadedChunks.Add(chunk);
+
+    }
+
+    string GetChunkFileName(Vector3Int chunkPos)
+    {
+        return chunkPos.x + "_" + chunkPos.y + "_" + chunkPos.z + ".chunk";
     }
 }

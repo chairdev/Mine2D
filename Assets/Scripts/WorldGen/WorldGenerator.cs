@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldGenerator : MonoBehaviour
 {
     public Vector2Int noiseOffset = new Vector2Int(0, 0);
-    public Vector2Int noiseScale = new Vector2Int(1, 1);
+    public float noiseScale = 20;
 
     public static WorldGenerator Instance;
     void Awake()
@@ -20,16 +20,18 @@ public class WorldGenerator : MonoBehaviour
         GenerateTestChunk();
     }
 
-    public void GenerateChunk(int chunkX, int chunkY, int chunkZ)
-    {
-        GenerateTestChunk();
-    }
+    // public void GenerateChunk(int chunkX, int chunkY, int chunkZ)
+    // {
+    //     GenerateTestChunk();
+    // }
 
-    void STUB(int chunkX, int chunkY)
+    public Chunk GenerateChunk(Vector3Int chunkPosition)
     {
        // blocks = new Block[Chunk.chunkSize.x, Chunk.chunkSize.y, Chunk.chunkSize.z];
-        double noiseX = 0;
-        double noiseY = 0;
+        Chunk chunk = new Chunk();
+        chunk.position = chunkPosition;
+        int surfaceY = 100;
+        Vector3Int chunkOffset = ChunkToPosition(chunkPosition);
         
 
 
@@ -39,18 +41,22 @@ public class WorldGenerator : MonoBehaviour
             {
                 for (int z = 0; z < Chunk.chunkSize.z; z++)
                 {
-                    //use OpenSimplex2
-                    noiseX = (chunkX * Chunk.chunkSize.x + x + noiseOffset.x) / noiseScale.x;
-                    noiseY = (chunkY * Chunk.chunkSize.y + y + noiseOffset.y) / noiseScale.y;
+                    int Value = Mathf.FloorToInt(surfaceY + OpenSimplex2.Noise2(World.Instance.seed, chunkOffset.x + x, chunkOffset.y + y) * noiseScale);
 
-
-                    float Value =  OpenSimplex2.Noise2(World.Instance.seed, noiseX, noiseY);
-
-
-
+                    if(Value < surfaceY)
+                    {
+                        chunk[x, y, z].id = BlockID.STONE;
+                    }
+                    else
+                    {
+                        chunk[x, y, z].id = BlockID.AIR;
+                    }
                 }
             }
         }
+
+        chunk.chunkState = ChunkState.LOADING;
+        return chunk;
     }
 
     Chunk GenerateTestChunk()
@@ -105,6 +111,16 @@ public class WorldGenerator : MonoBehaviour
     {
         return new Vector3Int(Mathf.FloorToInt(x / Chunk.chunkSize.x), Mathf.FloorToInt(y / Chunk.chunkSize.y), Mathf.FloorToInt(z / Chunk.chunkSize.z));
     }
+
+    public static Vector3Int ChunkToPosition(Vector3Int chunkPosition)
+    {
+        return new Vector3Int
+        {
+            x = chunkPosition.x * Chunk.chunkSize.x,
+            y = chunkPosition.y * Chunk.chunkSize.y,
+            z = chunkPosition.z * Chunk.chunkSize.z,
+        };
+    }
     
 
     
@@ -123,7 +139,7 @@ public class Chunk
 
     public Vector3Int position;
     private Block[,,] blocks = new Block[chunkSize.x,chunkSize.y, chunkSize.z];
-    public ChunkState chunkState = ChunkState.LOADING;
+    public ChunkState chunkState = ChunkState.GENERATING;
 
     public ref Block this[int x, int y, int z]
     {
@@ -134,7 +150,7 @@ public class Chunk
     }
 }
 
-public enum ChunkState { CLEAN, LOADING, DIRTY, OUT_OF_VIEW }
+public enum ChunkState { CLEAN, GENERATING, LOADING, DIRTY, OUT_OF_VIEW }
 
 public struct Block
 {

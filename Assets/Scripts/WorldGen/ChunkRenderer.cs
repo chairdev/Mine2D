@@ -15,10 +15,13 @@ public class ChunkRenderer : MonoBehaviour
         for(int i = 0; i < World.Instance.loadedChunks.Count; i++)
         {
             Chunk chunk = World.Instance.loadedChunks[i];
+            Debug.Log(chunk.chunkState);
             switch(chunk.chunkState)
             {
                 case ChunkState.LOADING:
+                    World.Instance.loadedChunks[i].chunkState = ChunkState.CLEAN;
                     CreateChunkOLD(chunk);
+                    
                 break;
                 case ChunkState.DIRTY:
                     //RENDER CHUNK
@@ -36,7 +39,6 @@ public class ChunkRenderer : MonoBehaviour
     {
         string chunkName = GetChunkName(chunk.position);
         GameObject chunkObject = new GameObject(chunkName);
-        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, (chunk.position.y * Chunk.chunkSize.y)* (chunk.position.z * Chunk.chunkSize.z) * 0.5f);
 
         int totalBlocks = Chunk.chunkSize.x * Chunk.chunkSize.y * Chunk.chunkSize.z;
 
@@ -54,7 +56,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         string chunkName = GetChunkName(chunk.position);
         GameObject chunkObject = new GameObject(chunkName);
-        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, (chunk.position.y * Chunk.chunkSize.y)* (chunk.position.z * Chunk.chunkSize.z) * 0.5f);
+        chunkObject.transform.position = new Vector3(chunk.position.x * Chunk.chunkSize.x, chunk.position.y * Chunk.chunkSize.y);
 
         int drawnBlocks = 0;
         for (int x = 0; x < Chunk.chunkSize.x; x++)

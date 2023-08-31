@@ -238,6 +238,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1671266644}
   - component: {fileID: 1671266643}
+  - component: {fileID: 1671266646}
+  - component: {fileID: 1671266645}
   m_Layer: 0
   m_Name: gen
   m_TagString: Untagged
@@ -257,18 +259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f589bbdde76c6f5469432bcc425b9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkSize: {x: 16, y: 16, z: 16}
-  blockPrefab: {fileID: 3693567094583564873, guid: 7f5dd3a070316034a9ac0e439df5d285, type: 3}
-  blockScriptables:
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 2ad4214cdf036fc4ebc8751ead74e990, type: 2}
-  - {fileID: 11400000, guid: 645598f7db0a7454eb7db09ff2d5a8f4, type: 2}
-  - {fileID: 11400000, guid: f4bc05beefee506499718d611517a4f7, type: 2}
-  blockDepth:
-  - {fileID: 8214636082212092739, guid: e4157a0dd4de05645a8cd576b003a585, type: 3}
-  - {fileID: 6374332315442246981, guid: e2e7034206b626141adacb74ca3ee56e, type: 3}
-  - {fileID: 124383472213753752, guid: a0b4fc604b6fbc742ae4c18c09e6e9b9, type: 3}
-  - {fileID: 7288124660969889150, guid: 28d3bfcb4631c6f4bb0d3d9d0cf9fcfa, type: 3}
+  noiseOffset: {x: 0, y: 0}
+  noiseScale: 1
 --- !u!4 &1671266644
 Transform:
   m_ObjectHideFlags: 0
@@ -284,3 +276,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1671266645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671266642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bfcd182ecc43f644b44790d5b6377bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunkObjects: []
+  blockPrefab: {fileID: 3693567094583564873, guid: 7f5dd3a070316034a9ac0e439df5d285, type: 3}
+  blockScriptables:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 2ad4214cdf036fc4ebc8751ead74e990, type: 2}
+  - {fileID: 11400000, guid: 645598f7db0a7454eb7db09ff2d5a8f4, type: 2}
+  - {fileID: 11400000, guid: f4bc05beefee506499718d611517a4f7, type: 2}
+  blockDepth:
+  - {fileID: 8214636082212092739, guid: e4157a0dd4de05645a8cd576b003a585, type: 3}
+  - {fileID: 6374332315442246981, guid: e2e7034206b626141adacb74ca3ee56e, type: 3}
+  - {fileID: 124383472213753752, guid: a0b4fc604b6fbc742ae4c18c09e6e9b9, type: 3}
+  - {fileID: 7288124660969889150, guid: 28d3bfcb4631c6f4bb0d3d9d0cf9fcfa, type: 3}
+--- !u!114 &1671266646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671266642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc48e1da2be42e40b56c5159463f611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadedChunks: []
+  worldName: DEBUG_WORLD
+  seed: 0
