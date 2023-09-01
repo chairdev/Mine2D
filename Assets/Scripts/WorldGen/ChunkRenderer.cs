@@ -8,6 +8,7 @@ public class ChunkRenderer : MonoBehaviour
 
     public GameObject blockPrefab;
     public BlockScriptable[] blockScriptables;
+    public Material textureAtlas;
     public GameObject[] blockDepth;
 
     void Update()
@@ -20,7 +21,7 @@ public class ChunkRenderer : MonoBehaviour
             {
                 case ChunkState.LOADING:
                     World.Instance.loadedChunks[i].chunkState = ChunkState.CLEAN;
-                    CreateChunkOLD(chunk);
+                    CreateChunkMesh(chunk);
                     
                 break;
                 case ChunkState.DIRTY:
@@ -79,11 +80,14 @@ public class ChunkRenderer : MonoBehaviour
                         triangles[triangleIndex++] = vertexIndex - 2;
                         triangles[triangleIndex++] = vertexIndex - 1;
 
-                        //uv
-                        uv[vertexIndex - 4] = new Vector2(0, 0);
-                        uv[vertexIndex - 3] = new Vector2(1, 0);
-                        uv[vertexIndex - 2] = new Vector2(1, 1);
-                        uv[vertexIndex - 1] = new Vector2(0, 1);
+                        //add texture from texture atlas (16x24), 4096 blocks
+                        int textureIndex = (int)chunk[x, y, z].id;
+                        float textureX = (textureIndex % 16) / 16f;
+                        float textureY = Mathf.Floor(textureIndex / 16f) / 24f;
+                        uv[vertexIndex - 4] = new Vector2(textureX, textureY);
+                        uv[vertexIndex - 3] = new Vector2(textureX + 1 / 16f, textureY);
+                        uv[vertexIndex - 2] = new Vector2(textureX + 1 / 16f, textureY + 1 / 24f);
+                        uv[vertexIndex - 1] = new Vector2(textureX, textureY + 1 / 24f);
 
                         drawnBlocks++;
                     }
@@ -98,7 +102,7 @@ public class ChunkRenderer : MonoBehaviour
         mesh.RecalculateNormals();
 
         chunkObject.GetComponent<MeshFilter>().mesh = mesh;
-        chunkObject.GetComponent<MeshRenderer>().material = blockScriptables[0].sprite;
+        chunkObject.GetComponent<MeshRenderer>().material = textureAtlas;
 
 
         

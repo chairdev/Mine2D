@@ -52,7 +52,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 0
   textureShape: 1
@@ -86185,7 +86185,7 @@ TextureImporter:
       BlockAtlas_1423: 342361348
       BlockAtlas_3382: -404256682
       BlockAtlas_3125: 800532168
-      BlockAtlas_2198: -981668008
+      BlockAtlas_1466: 1952810447
       BlockAtlas_598: 384392635
       BlockAtlas_3193: -1862341309
       BlockAtlas_644: 1854442122
@@ -88191,8 +88191,8 @@ TextureImporter:
       BlockAtlas_2473: 1402613761
       BlockAtlas_2697: -1895230579
       BlockAtlas_338: -197368432
-      BlockAtlas_1821: 1636602193
       BlockAtlas_50: -1633043019
+      BlockAtlas_1821: 1636602193
       BlockAtlas_1399: -1806165793
       BlockAtlas_2166: -1969711471
       BlockAtlas_1617: -811081335
@@ -90274,7 +90274,7 @@ TextureImporter:
       BlockAtlas_3011: 1277172831
       BlockAtlas_2346: -1671326650
       BlockAtlas_2135: -1450620140
-      BlockAtlas_1466: 1952810447
+      BlockAtlas_2198: -981668008
       BlockAtlas_3887: 52882024
   spritePackingTag: 
   pSDRemoveMatte: 0
