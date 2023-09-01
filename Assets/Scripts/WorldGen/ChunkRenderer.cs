@@ -21,7 +21,7 @@ public class ChunkRenderer : MonoBehaviour
             {
                 case ChunkState.LOADING:
                     World.Instance.loadedChunks[i].chunkState = ChunkState.CLEAN;
-                    CreateChunkMesh(chunk);
+                    CreateChunkOLD(chunk);
                     
                 break;
                 case ChunkState.DIRTY:
@@ -133,7 +133,7 @@ public class ChunkRenderer : MonoBehaviour
                         SpriteRenderer blockRenderer = block.GetComponent<SpriteRenderer>();
                         BlockScriptable blockScriptable = blockScriptables[(int)chunk[x, y, z].id];
 
-                        //blockRenderer.sprite = blockScriptable.sprite;
+                        blockRenderer.sprite = blockScriptable.sprite;
                         blockRenderer.sortingOrder = z;
 
                         SpriteRenderer[] sideRenderers = new SpriteRenderer[3];

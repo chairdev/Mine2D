@@ -55,7 +55,7 @@ public class WorldGenerator : MonoBehaviour
     BlockID GetBlock(int  x, int y, int z)
     {
         BlockID block = BlockID.AIR;
-        int surfaceHeight = 15;
+        int surfaceHeight = 100;
         //octave 1
         float noise = OpenSimplex2.Noise2(World.Instance.seed, x * noiseScale, z * noiseScale);
         Debug.Log("Heightmap Noise: " + noise);
@@ -157,7 +157,7 @@ public class WorldGenerator : MonoBehaviour
 [System.Serializable]
 public class Chunk
 {
-    public static Vector3Int chunkSize = new Vector3Int(16, 16, 32);
+    public static Vector3Int chunkSize = new Vector3Int(16, 16, 256);
 
     public Vector3Int position;
     private Block[,,] blocks = new Block[chunkSize.x,chunkSize.y, chunkSize.z];
